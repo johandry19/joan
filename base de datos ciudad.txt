@@ -1,0 +1,934 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 18
+Server version: 8.0.13 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| agenda             |
+| banco              |
+| dptos              |
+| eps                |
+| estudiantes        |
+| information_schema |
+| mysql              |
+| performance_schema |
+| prueba             |
+| taller             |
+| taller1            |
+| taller2            |
+| xx                 |
++--------------------+
+13 rows in set (0.00 sec)
+
+mysql> create database clausulas_add;
+Query OK, 1 row affected (1.27 sec)
+
+mysql> show databases:
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| agenda             |
+| banco              |
+| clausulas_add      |
+| dptos              |
+| eps                |
+| estudiantes        |
+| information_schema |
+| mysql              |
+| performance_schema |
+| prueba             |
+| taller             |
+| taller1            |
+| taller2            |
+| xx                 |
++--------------------+
+14 rows in set (0.00 sec)
+
+mysql> use clausulas_add;
+Database changed
+mysql> create table empleados;
+ERROR 1113 (42000): A table must have at least 1 column
+mysql> create table empleados(doc int , nombre varchar(8));
+Query OK, 0 rows affected (1.39 sec)
+
+mysql> select*from empleados;
+Empty set (0.00 sec)
+
+mysql> insert into empleados(doc , nombre)
+    -> values(10 , "manu"),(20, "Jose");
+Query OK, 2 rows affected (0.14 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select*from empleados;
++------+--------+
+| doc  | nombre |
++------+--------+
+|   10 | manu   |
+|   20 | Jose   |
++------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select from empleados;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from empleados' at line 1
+mysql> order by doc desc;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by doc desc' at line 1
+mysql> select*from empleados
+    -> order by doc desc;
++------+--------+
+| doc  | nombre |
++------+--------+
+|   20 | Jose   |
+|   10 | manu   |
++------+--------+
+2 rows in set (0.00 sec)
+
+mysql> Create table ciudades(codi_c int , nombre varchar(15),codi_depa int );
+Query OK, 0 rows affected (0.60 sec)
+
+mysql> select*from ciudades;
+Empty set (0.00 sec)
+
+mysql> insert into ciudades values(05,"Medellin",02),(06, "Bogota",01), (07, "Bello" , 02),(08, "Funza",01), (09,"Envigado",02);
+Query OK, 5 rows affected (0.14 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select*from ciudades
+    -> group by codi_depa;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
++--------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from ciudades;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select*from ciudades
+    -> group by codi_depa;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
++--------+----------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from ciudades
+    -> group by coi_depa
+    -> order by codi_depa;
+ERROR 1054 (42S22): Unknown column 'coi_depa' in 'group statement'
+mysql> select*from ciudades
+    -> group by (codi_depa), order by codi_depa;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by codi_depa' at line 2
+mysql> select codi_depa, count* from ciudades
+    -> group by codi_depa;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from ciudades
+group by codi_depa' at line 1
+mysql> select codi_depa , count* from ciudades , group by codi_depa;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from ciudades , group by codi_depa' at line 1
+mysql> select codi_depa , count(*)from ciudades  group by codi_depa;
++-----------+----------+
+| codi_depa | count(*) |
++-----------+----------+
+|         2 |        3 |
+|         1 |        2 |
++-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select codi_depa , count(*)from ciudades having codi_depa=02;
++-----------+----------+
+| codi_depa | count(*) |
++-----------+----------+
+|         2 |        5 |
++-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select codi_depa , count(*)from ciudades group by coid_depa having codi_depa=02;
+ERROR 1054 (42S22): Unknown column 'coid_depa' in 'group statement'
+mysql> select codi_depa , count(*)from ciudades group by coid_depa, having codi_depa=02;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having codi_depa=02' at line 1
+mysql> select codi_depa , count(*)from ciudades having codi_depa=02;
++-----------+----------+
+| codi_depa | count(*) |
++-----------+----------+
+|         2 |        5 |
++-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select codi_depa , codi_c
+    -> from ciudades;
++-----------+--------+
+| codi_depa | codi_c |
++-----------+--------+
+|         2 |      5 |
+|         1 |      6 |
+|         2 |      7 |
+|         1 |      8 |
+|         2 |      9 |
++-----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct(codi_depa) from ciudades;
++-----------+
+| codi_depa |
++-----------+
+|         2 |
+|         1 |
++-----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from ciudades;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select distinct(codi_depa), count(*) from cuidades;
+ERROR 1146 (42S02): Table 'clausulas_add.cuidades' doesn't exist
+mysql> select distinct(codi_depa), count(*) from ciudades;
++-----------+----------+
+| codi_depa | count(*) |
++-----------+----------+
+|         2 |        5 |
++-----------+----------+
+1 row in set (0.00 sec)
+
+mysql> select distinct(codi_c), count(*) from ciudades;
++--------+----------+
+| codi_c | count(*) |
++--------+----------+
+|      5 |        5 |
++--------+----------+
+1 row in set (0.00 sec)
+
+mysql> select distinct(codi_depa), count(*) from ciudades group by codi_depa;
++-----------+----------+
+| codi_depa | count(*) |
++-----------+----------+
+|         2 |        3 |
+|         1 |        2 |
++-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where codi_c between 3 and 8 order by ciudades;
+ERROR 1054 (42S22): Unknown column 'ciudades' in 'order clause'
+mysql> select * from ciudades where codi_c between 3 and 8 order by nombre;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      7 | Bello    |         2 |
+|      6 | Bogota   |         1 |
+|      8 | Funza    |         1 |
+|      5 | Medellin |         2 |
++--------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from ciudades where codi_c between 6 and 8 order by nombre;
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      7 | Bello  |         2 |
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where codi_c between 6 and 8 order by nombre having codi_depa=2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having codi_depa=2' at line 1
+mysql> select * from ciudades where codi_c between 6 and 8 order by nombre having codi_depa=1;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having codi_depa=1' at line 1
+mysql> select * from ciudades where codi_c between 6 and 8 order by nombre having codi_depa=01;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having codi_depa=01' at line 1
+mysql> select * from ciudades where codi_c between 6 and 8 order by nombre, having codi_depa=01;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'having codi_depa=01' at line 1
+mysql> select * from ciudades where nombre in('bogota', 'funza') order by nombre ;
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre between('bogota', 'funza') order by nombre;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by nombre' at line 1
+mysql> select * from ciudades where codi_depa between(6 and 8) order by nombre;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order by nombre' at line 1
+mysql> select * from ciudades where codi_depa between(6 and 8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades where nombre between('bogota', 'funza');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades where nombre between('bogota', 'funza');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades
+    -> ciudades where nombre between('bogota', 'funza');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select from ciudades where codi_c between(6 and 8);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'from ciudades where codi_c between(6 and 8)' at line 1
+mysql> select * from ciudades where nombre=('bogota','funza') order by nombre;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select * from ciudades where nombre=('funza') order by nombre;
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre=('funza' and 'bogota') order by nombre;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      7 | Bello    |         2 |
+|      6 | Bogota   |         1 |
+|      9 | Envigado |         2 |
+|      8 | Funza    |         1 |
+|      5 | Medellin |         2 |
++--------+----------+-----------+
+5 rows in set, 6 warnings (0.00 sec)
+
+mysql> select * from ciudades where nombre=('funza', 'bogota') order by nombre;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select * from ciudades where nombre=('funza', 'bogota') group by nombre;
+ERROR 1241 (21000): Operand should contain 1 column(s)
+mysql> select*from ciudades;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from ciudades, count(*) from ciudades group by codi_c having codi_depa=2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'count(*) from ciudades group by codi_c having codi_depa=2' at line 1
+mysql> select codi_c, nombre, codi_depa, count(*) from ciudades group by codi_c having codi_depa=2;
++--------+----------+-----------+----------+
+| codi_c | nombre   | codi_depa | count(*) |
++--------+----------+-----------+----------+
+|      5 | Medellin |         2 |        1 |
+|      7 | Bello    |         2 |        1 |
+|      9 | Envigado |         2 |        1 |
++--------+----------+-----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select codi_c, nombre, count(*) from ciudades group by codi_c having codi_depa=1;
+ERROR 1054 (42S22): Unknown column 'codi_depa' in 'having clause'
+mysql> select codi_c, nombre, codi_c, count(*) from ciudades group by codi_c having codi_depa=1;
+ERROR 1054 (42S22): Unknown column 'codi_depa' in 'having clause'
+mysql> select codi_c, nombre, count(*) from ciudades group by codi_c having codi_depa=2;
+ERROR 1054 (42S22): Unknown column 'codi_depa' in 'having clause'
+mysql> select codi_c, nombre, codi_depa, count(*) from ciudades group by codi_c having codi_depa=2;
++--------+----------+-----------+----------+
+| codi_c | nombre   | codi_depa | count(*) |
++--------+----------+-----------+----------+
+|      5 | Medellin |         2 |        1 |
+|      7 | Bello    |         2 |        1 |
+|      9 | Envigado |         2 |        1 |
++--------+----------+-----------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select codi_c, nombre, codi_depa, count(*) from ciudades group by codi_c having codi_depa=1;
++--------+--------+-----------+----------+
+| codi_c | nombre | codi_depa | count(*) |
++--------+--------+-----------+----------+
+|      6 | Bogota |         1 |        1 |
+|      8 | Funza  |         1 |        1 |
++--------+--------+-----------+----------+
+2 rows in set (0.00 sec)
+
+mysql> select* from ciudades where nombre IN("bogota", "Funza") order by nombre;
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from ciudades
+    -> where nombre ="Bogota"or nombre="Funza" order by nombre;
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> where nombre ="Bogota"and nombre="Funza" order by nombre;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where nombre ="Bogota"and nombre="Funza" order by nombre' at line 1
+mysql> where nombre ="Bogota" or nombre="Funza" order by nombre;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where nombre ="Bogota" or nombre="Funza" order by nombre' at line 1
+mysql> where nombre ="Bogota"or nombre="Funza" order by nombre;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where nombre ="Bogota"or nombre="Funza" order by nombre' at line 1
+mysql> select*from ciudades where nombre ="Bogota"and nombre="Funza" order by nombre;
+Empty set (0.00 sec)
+
+mysql> select*from ciudades where nombre ="Bogota"or nombre="Funza" order by nombre;
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from ciudades where codi_c not in ("Medellin","Bello","Envigado");
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+5 rows in set, 3 warnings (0.00 sec)
+
+mysql> select*from ciudades where nombre not in ("Medellin","Bello","Envigado");
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select*from ciudades where codi_c not in (5.7.9);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '.9)' at line 1
+mysql> select*from ciudades where codi_c not in (5.7,9);
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
++--------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select*from ciudades where codi_c not in (5,7,9);
++--------+--------+-----------+
+| codi_c | nombre | codi_depa |
++--------+--------+-----------+
+|      6 | Bogota |         1 |
+|      8 | Funza  |         1 |
++--------+--------+-----------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre is null;
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where codi_c <7 or codi_c >7;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from ciudades where codi_c <7 or codi_c >;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades where codi_c <7 or codi_c >4;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from ciudades where codi_c <7 or codi_c >5;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      7 | Bello    |         2 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+5 rows in set (0.00 sec)
+
+mysql> select * from ciudades where codi_c <7 or codi_c >7;
++--------+----------+-----------+
+| codi_c | nombre   | codi_depa |
++--------+----------+-----------+
+|      5 | Medellin |         2 |
+|      6 | Bogota   |         1 |
+|      8 | Funza    |         1 |
+|      9 | Envigado |         2 |
++--------+----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from cuidades where nombre is null;
+ERROR 1146 (42S02): Table 'clausulas_add.cuidades' doesn't exist
+mysql> select * from cuidades where nombre is null;
+ERROR 1146 (42S02): Table 'clausulas_add.cuidades' doesn't exist
+mysql> s
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 's' at line 1
+mysql> alter table ciudades add alcalde varchar(15);
+Query OK, 0 rows affected (0.46 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> describe ciudades:
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':' at line 1
+mysql> describe ciudades;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| codi_c    | int(11)     | YES  |     | NULL    |       |
+| nombre    | varchar(15) | YES  |     | NULL    |       |
+| codi_depa | int(11)     | YES  |     | NULL    |       |
+| alcalde   | varchar(15) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> select * from ciudades where alcalde in null;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'null' at line 1
+mysql> select * from ciudades where alcalde is null;
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      6 | Bogota   |         1 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      8 | Funza    |         1 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from ciudades where alcalde is null group by codi_c;
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      6 | Bogota   |         1 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      8 | Funza    |         1 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select * from ciudades where alcalde is null group by alcalde;
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
++--------+----------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select count(*) from ciudades where alcalde is null;
++----------+
+| count(*) |
++----------+
+|        5 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'b%';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      6 | Bogota |         1 | NULL    |
+|      7 | Bello  |         2 | NULL    |
++--------+--------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'bo_';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'med_';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'mb_';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'o%';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'o%';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%o';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '_o';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%i%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%o%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      6 | Bogota   |         1 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%a%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      6 | Bogota   |         1 | NULL    |
+|      8 | Funza    |         1 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%O%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      6 | Bogota   |         1 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%e%' ;
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select count(*) from ciudades where nombre like '%e%' ;
++----------+
+| count(*) |
++----------+
+|        3 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%e' ;
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%e' ;
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%e' ;
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%e%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%e';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%d%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%d%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%d%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%e%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%e';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%e';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%%e';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%e';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'e%%%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%%e%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      7 | Bello    |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'e%%%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'd%%%';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'd%%';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like 'd%';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%%d%';
++--------+----------+-----------+---------+
+| codi_c | nombre   | codi_depa | alcalde |
++--------+----------+-----------+---------+
+|      5 | Medellin |         2 | NULL    |
+|      9 | Envigado |         2 | NULL    |
++--------+----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '%z%';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      8 | Funza  |         1 | NULL    |
++--------+--------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> inser into ciudades values (10,"Girardot" , 01);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'inser into ciudades values (10,"Girardot" , 01)' at line 1
+mysql> inser into ciudades values (10,"Girardot",01);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'inser into ciudades values (10,"Girardot",01)' at line 1
+mysql> inser into ciudades values (10,"Girardot",01,"wilmer");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'inser into ciudades values (10,"Girardot",01,"wilmer")' at line 1
+mysql> insert into ciudades values (10,"Girardot",01,"wilmer");
+Query OK, 1 row affected (0.12 sec)
+
+mysql> insert into ciudades values (11,"Zipaquira",01,"Jose");
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from ciudades where nombre like '%z%';
++--------+-----------+-----------+---------+
+| codi_c | nombre    | codi_depa | alcalde |
++--------+-----------+-----------+---------+
+|      8 | Funza     |         1 | NULL    |
+|     11 | Zipaquira |         1 | Jose    |
++--------+-----------+-----------+---------+
+2 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '___z%';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      8 | Funza  |         1 | NULL    |
++--------+--------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '___z';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '___z_';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      8 | Funza  |         1 | NULL    |
++--------+--------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '_z_';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where nombre like '_z_';
+Empty set (0.00 sec)
+
+mysql> insert into ciudades value(12,"Bellozantana",01);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into ciudades values(12,"Bellozantana",01);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into ciudades values(12,"Bellozantana",01,"heiver");
+Query OK, 1 row affected (0.06 sec)
+
+mysql> describe ciudades
+    -> ;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| codi_c    | int(11)     | YES  |     | NULL    |       |
+| nombre    | varchar(15) | YES  |     | NULL    |       |
+| codi_depa | int(11)     | YES  |     | NULL    |       |
+| alcalde   | varchar(15) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from ciudades where  nombre like '%%z%%';
++--------+--------------+-----------+---------+
+| codi_c | nombre       | codi_depa | alcalde |
++--------+--------------+-----------+---------+
+|      8 | Funza        |         1 | NULL    |
+|     11 | Zipaquira    |         1 | Jose    |
+|     12 | Bellozantana |         1 | heiver  |
++--------+--------------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where  nombre like '%z_';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      8 | Funza  |         1 | NULL    |
++--------+--------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where nombre regexp "^a|A."
+    -> ;
++--------+--------------+-----------+---------+
+| codi_c | nombre       | codi_depa | alcalde |
++--------+--------------+-----------+---------+
+|      9 | Envigado     |         2 | NULL    |
+|     10 | Girardot     |         1 | wilmer  |
+|     11 | Zipaquira    |         1 | Jose    |
+|     12 | Bellozantana |         1 | heiver  |
++--------+--------------+-----------+---------+
+4 rows in set (0.01 sec)
+
+mysql> select * from ciudades where nombre regexp "^a|A.";
++--------+--------------+-----------+---------+
+| codi_c | nombre       | codi_depa | alcalde |
++--------+--------------+-----------+---------+
+|      9 | Envigado     |         2 | NULL    |
+|     10 | Girardot     |         1 | wilmer  |
+|     11 | Zipaquira    |         1 | Jose    |
+|     12 | Bellozantana |         1 | heiver  |
++--------+--------------+-----------+---------+
+4 rows in set (0.00 sec)
+
+mysql> select * from ciudades where nombre regexp "^z|z."
+    -> ;
++--------+--------------+-----------+---------+
+| codi_c | nombre       | codi_depa | alcalde |
++--------+--------------+-----------+---------+
+|      8 | Funza        |         1 | NULL    |
+|     11 | Zipaquira    |         1 | Jose    |
+|     12 | Bellozantana |         1 | heiver  |
++--------+--------------+-----------+---------+
+3 rows in set (0.00 sec)
+
+mysql> select * from ciudades where  nombre between("z","r");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades where not nombre between("z","r");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades where not nombre between ("z" and"r");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select * from ciudades where  nombre like '%z_';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      8 | Funza  |         1 | NULL    |
++--------+--------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql> select * from ciudades where  nombre like '_z_';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where  nombre like '-%z_';
+Empty set (0.00 sec)
+
+mysql> select * from ciudades where  nombre like '_%z_';
++--------+--------+-----------+---------+
+| codi_c | nombre | codi_depa | alcalde |
++--------+--------+-----------+---------+
+|      8 | Funza  |         1 | NULL    |
++--------+--------+-----------+---------+
+1 row in set (0.00 sec)
+
+mysql>
+
